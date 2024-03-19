@@ -12,5 +12,6 @@ var keyCmd = &cobra.Command{
 func init() {
 	keyCmd.AddCommand(subs.CreateKeyCMD)
 	keyCmd.AddCommand(subs.ListKeysCMD)
+	keyCmd.AddCommand(subs.RemoveKeyCMD)
 	rootCmd.AddCommand(keyCmd)
 }
