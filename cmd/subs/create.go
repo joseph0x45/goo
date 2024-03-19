@@ -1,17 +1,16 @@
 package subs
 
 import (
-	"log"
-	"os"
-
 	"github.com/atotto/clipboard"
 	"github.com/spf13/cobra"
 	"github.com/thewisepigeon/goo/internal/models"
 	"github.com/thewisepigeon/goo/pkg"
+	"log"
+	"os"
 )
 
-var KeyCmd = &cobra.Command{
-	Use: "key",
+var CreateKeyCMD = &cobra.Command{
+	Use: "create",
 	Run: func(cmd *cobra.Command, args []string) {
 		newKey := &models.Key{
 			Key: pkg.GenerateRandomString(15),
@@ -30,3 +29,5 @@ var KeyCmd = &cobra.Command{
 		os.Exit(0)
 	},
 }
+
+var CreateActionCMD = &cobra.Command{}

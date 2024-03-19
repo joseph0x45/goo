@@ -21,3 +21,22 @@ func (k *Key) Save() error {
 	}
 	return nil
 }
+
+func (k *Key) GetKeys() ([]Key, error) {
+	pool := pkg.DBConnection()
+	keys := []Key{}
+	err := pool.Select(&keys, "select * from keys")
+	if err != nil {
+		return keys, fmt.Errorf("Error while retrieving keys: %w", err)
+	}
+	return keys, nil
+}
+
+func (k *Key) DeleteKey(id string) error {
+	pool := pkg.DBConnection()
+	_, err := pool.Exec("delete from keys where id=$1", id)
+	if err != nil {
+		return fmt.Errorf("Error while deleting key: %w", err)
+	}
+	return nil
+}
