@@ -2,11 +2,10 @@ package subs
 
 import (
 	"fmt"
+	"github.com/spf13/cobra"
+	"github.com/thewisepigeon/goo/models"
 	"log"
 	"os"
-
-	"github.com/spf13/cobra"
-	"github.com/thewisepigeon/goo/internal/models"
 )
 
 var ListKeysCMD = &cobra.Command{

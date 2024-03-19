@@ -2,7 +2,7 @@ package subs
 
 import (
 	"github.com/spf13/cobra"
-	"github.com/thewisepigeon/goo/internal/models"
+	"github.com/thewisepigeon/goo/models"
 	"log"
 	"os"
 )
@@ -26,5 +26,5 @@ var RemoveKeyCMD = &cobra.Command{
 }
 
 func init() {
-	RemoveKeyCMD.Flags().StringP("id", "i", "", "ID of the key to be deleted")
+	RemoveKeyCMD.Flags().String("id", "", "ID of the key to be deleted")
 }

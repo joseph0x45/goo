@@ -1,4 +1,4 @@
-package pkg
+package database
 
 import (
 	"github.com/jmoiron/sqlx"
