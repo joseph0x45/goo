@@ -11,5 +11,7 @@ var actionCmd = &cobra.Command{
 
 func init() {
 	actionCmd.AddCommand(subs.CreateActionCMD)
+	actionCmd.AddCommand(subs.RemoveActionCMD)
+	actionCmd.AddCommand(subs.ListActionsCMD)
 	rootCmd.AddCommand(actionCmd)
 }
