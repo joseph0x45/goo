@@ -88,6 +88,33 @@ var CreateActionCMD = &cobra.Command{
 			fmt.Println("New action created")
 			os.Exit(0)
 		}
+		name, _ = cmd.Flags().GetString("name")
+		ok, message := pkg.IsValidName(name)
+		if !ok {
+			fmt.Println(message)
+			os.Exit(0)
+		}
+		workdir, _ = cmd.Flags().GetString("workdir")
+		ok = pkg.IsValidDir(workdir)
+		if !ok {
+			fmt.Println("Directory", workdir, "not found")
+			os.Exit(0)
+		}
+		command, _ = cmd.Flags().GetString("command")
+		recover_command, _ = cmd.Flags().GetString("recover")
+		newAction := &models.Action{
+			Name:           name,
+			WorkDir:        workdir,
+			Command:        command,
+			RecoverCommand: recover_command,
+		}
+		err = newAction.Save()
+		if err != nil {
+			fmt.Println(err.Error())
+			os.Exit(1)
+		}
+		fmt.Println("New action created")
+		os.Exit(0)
 	},
 }
 
