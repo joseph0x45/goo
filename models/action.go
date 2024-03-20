@@ -53,3 +53,10 @@ func (a *Action) List() ([]Action, error) {
 	}
 	return actions, nil
 }
+
+func (a *Action) GetByName(name string) (*Action, error) {
+	pool := database.DBConnection()
+	action := new(Action)
+	err := pool.Get(action, "select * from actions where name=$1", name)
+	return action, err
+}

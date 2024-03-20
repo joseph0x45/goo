@@ -1,17 +1,62 @@
 package cmd
 
 import (
-	"github.com/spf13/cobra"
+	"database/sql"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
+	"os/exec"
+	"strings"
+
+	"github.com/jmoiron/sqlx"
+	"github.com/spf13/cobra"
+	"github.com/thewisepigeon/goo/database"
+	"github.com/thewisepigeon/goo/models"
 )
+
+var pool *sqlx.DB
 
 var rootCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		mux := http.NewServeMux()
 		mux.Handle("GET /run/{action}", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			w.Write([]byte("Hello from Goo\n"))
+			action, err := new(models.Action).GetByName(r.PathValue("action"))
+			if err != nil {
+				if err == sql.ErrNoRows {
+					w.WriteHeader(http.StatusNotFound)
+					return
+				}
+				log.Println("Error while retrieving action:", err.Error())
+				w.WriteHeader(http.StatusInternalServerError)
+				return
+			}
+			commands := strings.Split(action.Command, "&&&")
+			for _, command := range commands {
+				cmd := exec.Command("sh", "-c", command)
+				cmd.Dir = action.WorkDir
+				output, err := cmd.Output()
+				if err != nil {
+					log.Println("Error while running action:", err.Error())
+					log.Println("Running recovery commands for action ", action.Name)
+					recover_cmds := strings.Split(action.RecoverCommand, "&&&")
+					for _, recover_cmd := range recover_cmds {
+						cmd := exec.Command("sh", "-c", recover_cmd)
+						cmd.Dir = action.WorkDir
+						output, err := cmd.Output()
+						if err != nil {
+							log.Println("Error while running recovery command: ", err.Error())
+							w.WriteHeader(http.StatusInternalServerError)
+							return
+						}
+						log.Println(string(output))
+					}
+					w.WriteHeader(http.StatusInternalServerError)
+					return
+				}
+				fmt.Println(string(output))
+			}
+			w.WriteHeader(http.StatusOK)
 			return
 		}))
 		log.Println("Goo launched on port 8080")
@@ -23,6 +68,7 @@ var rootCmd = &cobra.Command{
 }
 
 func Execute() {
+	pool = database.DBConnection()
 	err := rootCmd.Execute()
 	if err != nil {
 		os.Exit(1)
