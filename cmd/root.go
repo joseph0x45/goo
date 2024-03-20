@@ -3,16 +3,15 @@ package cmd
 import (
 	"database/sql"
 	"fmt"
+	"github.com/jmoiron/sqlx"
+	"github.com/spf13/cobra"
+	"github.com/thewisepigeon/goo/database"
+	"github.com/thewisepigeon/goo/models"
 	"log"
 	"net/http"
 	"os"
 	"os/exec"
 	"strings"
-
-	"github.com/jmoiron/sqlx"
-	"github.com/spf13/cobra"
-	"github.com/thewisepigeon/goo/database"
-	"github.com/thewisepigeon/goo/models"
 )
 
 var pool *sqlx.DB
@@ -21,6 +20,21 @@ var rootCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		mux := http.NewServeMux()
 		mux.Handle("GET /run/{action}", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			apiKey := r.Header.Get("Authorization")
+			if apiKey == "" {
+				w.WriteHeader(http.StatusUnauthorized)
+				return
+			}
+			ok, err := new(models.Key).IsValid(apiKey)
+			if err != nil {
+				log.Println(err.Error())
+				w.WriteHeader(http.StatusInternalServerError)
+				return
+			}
+			if !ok {
+				w.WriteHeader(http.StatusUnauthorized)
+				return
+			}
 			action, err := new(models.Action).GetByName(r.PathValue("action"))
 			if err != nil {
 				if err == sql.ErrNoRows {

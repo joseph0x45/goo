@@ -40,3 +40,13 @@ func (k *Key) DeleteKey(id string) error {
 	}
 	return nil
 }
+
+func (k *Key) IsValid(key string) (bool, error) {
+	pool := database.DBConnection()
+	count := 0
+	err := pool.QueryRowx("select count(*) from keys where key=$1", key).Scan(&count)
+	if err != nil {
+		return false, fmt.Errorf("Error while counting keys: %w", err)
+	}
+	return count == 1, nil
+}
