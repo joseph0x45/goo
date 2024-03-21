@@ -20,6 +20,15 @@ var pool *sqlx.DB
 var rootCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		mux := http.NewServeMux()
+		mux.Handle("GET /ping", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			w.WriteHeader(http.StatusOK)
+			w.Write([]byte("pong"))
+			return
+		}))
+		mux.Handle("GET /healthcheck", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			w.WriteHeader(http.StatusOK)
+			return
+		}))
 		mux.Handle("GET /run/{action}", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			apiKey := r.Header.Get("Authorization")
 			if apiKey == "" {
