@@ -1,6 +1,9 @@
 build:
 	@go build -o goo .
 
+run:
+	@go build -o goo . && ./goo
+
 migrate:
 	@sqlite3 goo.db < schema.sql
 	@echo "Migration successful"

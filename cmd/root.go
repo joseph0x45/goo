@@ -12,6 +12,7 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+	"time"
 )
 
 var pool *sqlx.DB
@@ -50,7 +51,15 @@ var rootCmd = &cobra.Command{
 				cmd := exec.Command("sh", "-c", command)
 				cmd.Dir = action.WorkDir
 				output, err := cmd.Output()
+				newLog := &models.Log{
+					Action:  action.ID,
+					At:      time.Now().Format("15:04 02-01-2006"),
+					Command: command,
+				}
 				if err != nil {
+					newLog.Output = err.Error()
+					newLog.ExitCode = cmd.ProcessState.ExitCode()
+					newLog.Save()
 					log.Println("Error while running action:", err.Error())
 					log.Println("Running recovery commands for action ", action.Name)
 					recover_cmds := strings.Split(action.RecoverCommand, "&&&")
@@ -58,7 +67,15 @@ var rootCmd = &cobra.Command{
 						cmd := exec.Command("sh", "-c", recover_cmd)
 						cmd.Dir = action.WorkDir
 						output, err := cmd.Output()
+						newLog := &models.Log{
+							Action:  action.ID,
+							At:      time.UTC.String(),
+							Command: command,
+						}
 						if err != nil {
+							newLog.Output = err.Error()
+							newLog.ExitCode = cmd.ProcessState.ExitCode()
+							newLog.Save()
 							log.Println("Error while running recovery command: ", err.Error())
 							w.WriteHeader(http.StatusInternalServerError)
 							return
@@ -68,6 +85,9 @@ var rootCmd = &cobra.Command{
 					w.WriteHeader(http.StatusInternalServerError)
 					return
 				}
+				newLog.Output = string(output)
+				newLog.ExitCode = cmd.ProcessState.ExitCode()
+				newLog.Save()
 				fmt.Println(string(output))
 			}
 			w.WriteHeader(http.StatusOK)
