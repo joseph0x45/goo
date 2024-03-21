@@ -1,0 +1,8 @@
+[Unit]
+Description=Command runner
+
+[Service]
+Type=simple
+ExecStart=/home/thewisepigeon/code/dockerizer/dockerizer
+Restart=always
+RestartSec=3
