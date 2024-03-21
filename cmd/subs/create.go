@@ -11,24 +11,32 @@ import (
 	"os"
 )
 
+func CreateKey() {
+	newKey := &models.Key{
+		Key: pkg.GenerateRandomString(15),
+	}
+	err := newKey.Save()
+	if err != nil {
+		log.Println(err.Error())
+		os.Exit(1)
+	}
+	err = clipboard.WriteAll(newKey.Key)
+	if err != nil {
+		log.Println("Key created: ", newKey.Key)
+		os.Exit(0)
+	}
+	log.Println("Key created successfuly and sent into your clipboard")
+	os.Exit(0)
+}
+
+func CreateAction(name, workdir, command, recover_command string) {
+
+}
+
 var CreateKeyCMD = &cobra.Command{
 	Use: "create",
 	Run: func(cmd *cobra.Command, args []string) {
-		newKey := &models.Key{
-			Key: pkg.GenerateRandomString(15),
-		}
-		err := newKey.Save()
-		if err != nil {
-			log.Println(err.Error())
-			os.Exit(1)
-		}
-		err = clipboard.WriteAll(newKey.Key)
-		if err != nil {
-			log.Println("Key created: ", newKey.Key)
-			os.Exit(0)
-		}
-		log.Println("Key created successfuly and sent into your clipboard")
-		os.Exit(0)
+		CreateKey()
 	},
 }
 
