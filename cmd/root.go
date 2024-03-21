@@ -93,8 +93,8 @@ var rootCmd = &cobra.Command{
 			w.WriteHeader(http.StatusOK)
 			return
 		}))
-		log.Println("Goo launched on port 8080")
-		err := http.ListenAndServe(":8080", mux)
+		log.Println("Goo launched on port 9090")
+		err := http.ListenAndServe(":9090", mux)
 		if err != nil {
 			panic(err)
 		}
