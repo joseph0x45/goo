@@ -6,3 +6,6 @@ Type=simple
 ExecStart=/home/thewisepigeon/code/dockerizer/dockerizer
 Restart=always
 RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
