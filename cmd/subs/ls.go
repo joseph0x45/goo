@@ -47,3 +47,21 @@ var ListActionsCMD = &cobra.Command{
 		os.Exit(0)
 	},
 }
+
+var ListLogsCMD = &cobra.Command{
+	Use: "ls",
+	Run: func(cmd *cobra.Command, args []string) {
+		logs, err := new(models.Log).List()
+		if err != nil {
+			fmt.Println(err.Error())
+			os.Exit(1)
+		}
+		data, err := json.MarshalIndent(logs, "", "  ")
+		if err != nil {
+			fmt.Println("Error while displaying logs:", err.Error())
+			os.Exit(1)
+		}
+		fmt.Println(string(data))
+		os.Exit(0)
+	},
+}
