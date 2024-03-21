@@ -22,3 +22,5 @@ go.work
 tmp
 *.db
 goo
+build_tool
+tooling/tooling
