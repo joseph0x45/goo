@@ -47,4 +47,4 @@ jobs:
         upload_url: ${{ steps.make_release.outputs.upload_url }}
         asset_path: ./goo.linux.amd64.tar.gz
         asset_name: goo.linux.amd64.tar.gz
-        asset_content_type: application/gzip
+        asset_content_type: application/x-tar
