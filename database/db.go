@@ -42,8 +42,20 @@ func gooPath() string {
 	return fmt.Sprintf("%s/goo.db", gooHome())
 }
 
-func ResetDB() error {
-	err := os.Remove(gooPath())
+func InitDB() error {
+	if err := os.MkdirAll(gooHome(), 0755); err != nil {
+		return err
+	}
+	file, err := os.Create(gooPath())
+	if err != nil {
+		return err
+	}
+	file.Close()
+	db, err := sqlx.Connect("sqlite3", gooPath())
+	if err != nil {
+		return err
+	}
+	_, err = db.Exec(dbSchema)
 	if err != nil {
 		return err
 	}
@@ -58,22 +70,7 @@ func DBConnection() *sqlx.DB {
 		lock.Lock()
 		defer lock.Unlock()
 		if dbPool == nil {
-			os.MkdirAll(gooHome(), 0755)
-			_, err := os.Stat(gooPath())
-			if err != nil {
-				os.Create(gooPath())
-				pool, err := sqlx.Connect("sqlite3", "goo.db")
-				if err != nil {
-					fmt.Println("Error while connecting to database: ")
-					panic(err)
-				}
-				_, err = pool.Exec(dbSchema)
-				if err != nil {
-					fmt.Println("Error while connecting to database: ")
-					panic(err)
-				}
-			}
-			pool, err := sqlx.Connect("sqlite3", "goo.db")
+			pool, err := sqlx.Connect("sqlite3", gooPath())
 			if err != nil {
 				panic(err)
 			}

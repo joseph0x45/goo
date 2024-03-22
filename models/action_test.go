@@ -3,11 +3,9 @@ package models
 import (
 	"database/sql"
 	"testing"
-	"github.com/thewisepigeon/goo/database"
 )
 
 func TestAction(t *testing.T) {
-	database.ResetDB()
 	t.Run("Create new action", func(t *testing.T) {
 		newAction := &Action{
 			Name:           "test_action",
@@ -77,5 +75,4 @@ func TestAction(t *testing.T) {
 			t.Errorf("Wanted sql.ErrNoRows but got %q", err.Error())
 		}
 	})
-	database.ResetDB()
 }

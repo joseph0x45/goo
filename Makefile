@@ -17,4 +17,6 @@ reset-db:
 	@$(MAKE) migrate
 
 test:
+	@$(MAKE) build-tooling
+	./build_tool setup_db
 	@go test -p 1 ./... -v
