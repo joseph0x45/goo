@@ -34,7 +34,6 @@ jobs:
       if: contains(${{ github.event.head_commit.message }}, 'release') == true
       run: |
         release_output=$(./build_tool release '${{ github.event.head_commit.message }}')
-        echo "::set-output name=upload_url::${release_output}"
         echo "upload_url=$release_output" >> "$GITHUB_OUTPUT"
 
     - name: Print state
