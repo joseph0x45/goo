@@ -14,7 +14,7 @@ type Log struct {
 	ExitCode int    `json:"exit_code" db:"exit_code"`
 }
 
-func (l *Log) Save() {
+func (l *Log) Save() error {
 	pool := database.DBConnection()
 	_, err := pool.NamedExec(
 		`
@@ -25,7 +25,9 @@ func (l *Log) Save() {
 	)
 	if err != nil {
 		fmt.Println("Failed to save action execution log: ", err.Error())
+		return err
 	}
+	return nil
 }
 
 func (l *Log) List() ([]Log, error) {
