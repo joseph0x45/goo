@@ -36,5 +36,11 @@ jobs:
         release_output=$(./build_tool release '${{ github.event.head_commit.message }}')
         echo "upload_url=$release_output" >> $GITHUB_OUTPUT
 
-    - name: Print state
-      run: echo ${{steps.make_release.outputs.upload_url}}
+    - name: Upload linux artifact
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      with:
+        upload_url: ${{ steps.make_release.outputs.upload_url }}
+        asset_path: ./goo
+        asset_name: Goo
