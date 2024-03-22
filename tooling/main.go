@@ -123,6 +123,7 @@ func main() {
 			fmt.Println(err.Error())
 			os.Exit(1)
 		}
+		fmt.Printf("%#v\n", responseData)
 		uploadURL, ok := responseData["upload_url"].(string)
 		if !ok {
 			os.Exit(1)
