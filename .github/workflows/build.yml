@@ -44,3 +44,4 @@ jobs:
         upload_url: ${{ steps.make_release.outputs.upload_url }}
         asset_path: ./goo
         asset_name: Goo
+        asset_content_type: application/zip
