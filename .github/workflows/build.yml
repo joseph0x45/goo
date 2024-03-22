@@ -34,7 +34,7 @@ jobs:
       if: contains(${{ github.event.head_commit.message }}, 'release') == true
       run: |
         release_output=$(./build_tool release '${{ github.event.head_commit.message }}')
-        echo "upload_url=$release_output" >> "$GITHUB_OUTPUT"
+        echo "upload_url=$release_output" >> $GITHUB_OUTPUT
 
     - name: Print state
       run: echo ${{steps.make_release.outputs.upload_url}}
