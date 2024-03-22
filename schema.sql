@@ -2,7 +2,6 @@ create table if not exists keys (
   id integer primary key,
   key text not null
 );
-
 create table if not exists actions (
   id integer primary key,
   name text not null unique,
@@ -10,7 +9,6 @@ create table if not exists actions (
   command text not null,
   recover_command text not null
 );
-
 create table if not exists logs (
   id integer primary key,
   action integer not null,
