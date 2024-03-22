@@ -60,3 +60,17 @@ func (a *Action) GetByName(name string) (*Action, error) {
 	err := pool.Get(action, "select * from actions where name=$1", name)
 	return action, err
 }
+
+func IsValidName(name string) (bool, string) {
+	if name == "" {
+		return false, "Name can not be empty"
+	}
+	ok, err := new(Action).IsNotDuplicateName(name)
+	if err != nil {
+		panic(err)
+	}
+	if !ok {
+		return false, "An action with this name already exists"
+	}
+	return true, ""
+}

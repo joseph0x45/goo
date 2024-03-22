@@ -2,8 +2,8 @@ package models
 
 import (
 	"database/sql"
-	"github.com/thewisepigeon/goo/database"
 	"testing"
+	"github.com/thewisepigeon/goo/database"
 )
 
 func TestAction(t *testing.T) {

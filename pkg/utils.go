@@ -4,8 +4,6 @@ import (
 	"math/rand"
 	"os"
 	"strings"
-
-	"github.com/thewisepigeon/goo/models"
 )
 
 func GenerateRandomString(length int) string {
@@ -16,20 +14,6 @@ func GenerateRandomString(length int) string {
 		key += string(CHARACTER_POOL[idx])
 	}
 	return key
-}
-
-func IsValidName(name string) (bool, string) {
-	if name == "" {
-		return false, "Name can not be empty"
-	}
-	ok, err := new(models.Action).IsNotDuplicateName(name)
-	if err != nil {
-		panic(err)
-	}
-	if !ok {
-		return false, "An action with this name already exists"
-	}
-	return true, ""
 }
 
 func IsValidDir(path string) bool {

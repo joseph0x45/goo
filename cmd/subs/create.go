@@ -54,7 +54,7 @@ var CreateActionCMD = &cobra.Command{
 				panic(err)
 			}
 			pkg.TrimNewLineChar(&name)
-			ok, message := pkg.IsValidName(name)
+			ok, message := models.IsValidName(name)
 			if !ok {
 				fmt.Println(message)
 				os.Exit(0)
@@ -97,7 +97,7 @@ var CreateActionCMD = &cobra.Command{
 			os.Exit(0)
 		}
 		name, _ = cmd.Flags().GetString("name")
-		ok, message := pkg.IsValidName(name)
+		ok, message := models.IsValidName(name)
 		if !ok {
 			fmt.Println(message)
 			os.Exit(0)
