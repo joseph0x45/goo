@@ -18,12 +18,17 @@ jobs:
       with:
         go-version: '1.22.0'
 
-    - name: Test
+    - name: Build tooling binary
+      run: make build-tooling
+
+    - name: Run tests
       run: make test
 
-    - name: Make release
-      if: contains( ${{ github.event.head_commit.message }}, 'release' ) == true
-      run: |
-        echo "Releasing"
-        ./build_tool ${{ github.event.head_commit.message }}
+    - name: Build binary
+      run: ./build_tool ${{ github.event.head_commit.message }}
 
+    - name: Make release
+      uses: actions/upload-artifact@v4
+      with: 
+        name: test_artifact
+        path: ./goo
