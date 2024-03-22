@@ -36,12 +36,16 @@ jobs:
         release_output=$(./build_tool release '${{ github.event.head_commit.message }}')
         echo "upload_url=$release_output" >> $GITHUB_OUTPUT
 
+    - name: Zip binary
+      run: |
+        gzip -c ./goo > goo.linux.amd64.gz
+
     - name: Upload linux artifact
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       with:
         upload_url: ${{ steps.make_release.outputs.upload_url }}
-        asset_path: ./goo
-        asset_name: Goo
+        asset_path: ./goo.linux.amd64.gz
+        asset_name: Goo.linux.amd64.gz
         asset_content_type: application/zip
