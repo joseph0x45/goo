@@ -31,10 +31,6 @@ jobs:
       env:
         GH_TOKEN: ${{secrets.GH_TOKEN}}
       if: contains(${{ github.event.head_commit.message }}, 'release') == true
-      run: ./build_tool release '${{ github.event.head_commit.message }}'
-    #
-    # - name: Upload linux artifact
-    #   uses: actions/upload-artifact@v4
-    #   with: 
-    #     name: test_artifact
-    #     path: ./goo
+      run: |
+        release_output=$(./build_tool release '${{ github.event.head_commit.message }}')
+        echo "::set-output name=upload_url::${release_output}"

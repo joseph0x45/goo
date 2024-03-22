@@ -4,13 +4,15 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/jmoiron/sqlx"
-	_ "github.com/mattn/go-sqlite3"
+	"io"
 	"net/http"
 	"os"
 	"os/exec"
 	"strings"
 	"time"
+
+	"github.com/jmoiron/sqlx"
+	_ "github.com/mattn/go-sqlite3"
 )
 
 var dbSchema = `
@@ -110,6 +112,22 @@ func main() {
 			fmt.Println(res.Status)
 			os.Exit(1)
 		}
+		body, err := io.ReadAll(res.Body)
+		if err != nil {
+			fmt.Println(err.Error())
+			os.Exit(1)
+		}
+		responseData := make(map[string]interface{})
+		err = json.Unmarshal(body, &responseData)
+		if err != nil {
+			fmt.Println(err.Error())
+			os.Exit(1)
+		}
+		uploadURL, ok := responseData["upload_url"].(string)
+		if !ok {
+			os.Exit(1)
+		}
+		fmt.Print(uploadURL)
 		os.Exit(0)
 	default:
 		commitMessage := os.Args[1]
