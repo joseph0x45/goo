@@ -25,7 +25,7 @@ jobs:
       run: make test
 
     - name: Build binary
-      run: ./build_tool ${{ github.event.head_commit.message }}
+      run: ./build_tool '${{ github.event.head_commit.message }}'
 
     - name: Make release
       uses: actions/upload-artifact@v4

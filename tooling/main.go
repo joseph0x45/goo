@@ -44,6 +44,7 @@ func gooPath() string {
 }
 
 func main() {
+  fmt.Println(os.Args)
 	if os.Args[1] == "setup_db" {
 		err := os.MkdirAll(gooHome(), 0755)
 		if err != nil {
