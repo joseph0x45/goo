@@ -106,7 +106,7 @@ func main() {
 		req.Header.Add("Accept", "application/vnd.github+json")
 		req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", os.Getenv("GH_TOKEN")))
 		res, err := http.DefaultClient.Do(req)
-		if res.StatusCode != http.StatusOK {
+		if res.StatusCode != http.StatusCreated {
 			fmt.Println(res.Status)
 			os.Exit(1)
 		}
