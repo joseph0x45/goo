@@ -17,4 +17,4 @@ reset-db:
 	@$(MAKE) migrate
 
 test:
-	@go test ./... -v
+	@go test -p 1 ./... -v
