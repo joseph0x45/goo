@@ -75,7 +75,7 @@ func main() {
 			os.Exit(0)
 		}
 		releaseVersion := strings.Split(commitMessage, " ")[1]
-		linkerFlags := fmt.Sprintf("-X 'main.Version=%s'", releaseVersion)
+		linkerFlags := fmt.Sprintf("-s -w -X 'main.Version=%s'", releaseVersion)
 		buildCmd := exec.Command("sh", "-c", fmt.Sprintf("GOOS=linux GOARCH=amd64 go build -ldflags='%s' -o goo .", linkerFlags))
 		err := buildCmd.Run()
 		if err != nil {
