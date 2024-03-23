@@ -1,17 +1,12 @@
 package main
 
 import (
-	"bytes"
-	"encoding/json"
 	"fmt"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
-	"io"
-	"net/http"
 	"os"
 	"os/exec"
 	"strings"
-	"time"
 )
 
 var dbSchema = `
