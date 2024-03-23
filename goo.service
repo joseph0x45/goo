@@ -1,9 +1,9 @@
 [Unit]
-Description=Command runner
+Description=goo is a command runner. Visit https://github.com/TheWisePigeon/goo to learn more
 
 [Service]
 Type=simple
-ExecStart=/home/thewisepigeon/code/dockerizer/dockerizer
+ExecStart=/usr/local/bin/goo
 Restart=always
 RestartSec=3
 

@@ -3,6 +3,14 @@
 clean_up(){
   echo "Cleaning up"
   rm -rf /tmp/.goo
+  if [ -f "/lib/systemd/system/goo.service" ]; then
+    echo "Service file exists. Deleting..."
+    if command -v sudo &> /dev/null; then
+      sudo rm /lib/systemd/system/goo.service
+    else
+      rm /lib/systemd/system/goo.service
+    fi
+  fi
   echo "Installation failed. Please open an issue on https://github.com/TheWisePigeon/goo/issues to get help"
 }
 
@@ -30,13 +38,15 @@ echo "Making binary executable"
 chmod u+x /tmp/.goo/goo
 check_err "Making binary executable"
 
-echo "Copying service file"
+echo "Copying service file and binary"
 if command -v sudo &> /dev/null; then
   sudo cp /tmp/.goo/goo.service /lib/systemd/system/
+  sudo cp /tmp/.goo/goo /usr/local/bin/
 else
   cp /tmp/.goo/goo.service /lib/systemd/system/
+  cp /tmp/.goo/goo /usr/local/bin/
 fi
-check_err "Copying service file"
+check_err "Copying service file and/or binary file"
 
 echo "Enabling and starting service"
 if command -v sudo &> /dev/null; then
