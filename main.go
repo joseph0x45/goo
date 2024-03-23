@@ -9,10 +9,12 @@ import (
 var Version = "0.0.1"
 
 func main() {
-	var command = os.Args[1]
-	if command == "version" {
-		fmt.Println("Goo", Version)
-		return
+	if len(os.Args) > 1 {
+		var command = os.Args[1]
+		if command == "version" {
+			fmt.Println("Goo", Version)
+			return
+		}
 	}
 	cmd.Execute()
 }
