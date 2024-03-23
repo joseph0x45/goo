@@ -8,12 +8,12 @@ echo "Making binary executable"
 chmod u+x /tmp/.goo/goo
 if command -v sudo &> /dev/null; then
     sudo cp /tmp/.goo/goo.service /lib/systemd/system/
-    sudo systemctl enable yourapp.service
-    sudo systemctl start yourapp.service 
+    sudo systemctl enable goo.service
+    sudo systemctl start goo.service 
 else
     cp /tmp/.goo/goo.service /lib/systemd/system/
-    systemctl enable yourapp.service
-    systemctl start yourapp.service 
+    systemctl enable goo.service
+    systemctl start goo.service 
 fi
 echo "Cleaning up"
 rm -rf /tmp/.goo
