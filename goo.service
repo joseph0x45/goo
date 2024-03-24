@@ -4,6 +4,8 @@ Description=goo is a command runner. Visit https://github.com/TheWisePigeon/goo 
 [Service]
 Type=simple
 ExecStart=/usr/local/bin/goo
+User=root
+Group=root
 Restart=always
 RestartSec=3
 

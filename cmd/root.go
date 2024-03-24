@@ -15,7 +15,7 @@ import (
 
 func HandlePing(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("pong"))
+	w.Write([]byte("pong\n"))
 	return
 }
 
