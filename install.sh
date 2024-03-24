@@ -1,4 +1,12 @@
 #!/bin/sh
+#
+
+version=$1
+
+if [[ -z $version ]]; then
+  echo "Please specify the version you want to install"
+  exit 0
+fi
 
 clean_up(){
   echo "Cleaning up"
@@ -27,11 +35,11 @@ mkdir -p ~/.goo
 check_err "Creating Goo home"
 
 echo "Downloading latest version of Goo database"
-curl -L -o ~/.goo/goo.db https://github.com/TheWisePigeon/goo/releases/download/1.0/goo.db
+curl -L -o ~/.goo/goo.db https://github.com/TheWisePigeon/goo/releases/download/$version/goo.db
 check_err "Downloading latest version of Goo database"
 
 echo "Downloading latest version of Goo"
-curl -L -o /tmp/.goo/goo https://github.com/TheWisePigeon/goo/releases/download/1.0/goo
+curl -L -o /tmp/.goo/goo https://github.com/TheWisePigeon/goo/releases/download/$version/goo
 check_err "Downloading latest version of Goo"
 
 echo "Downloading latest service file"
