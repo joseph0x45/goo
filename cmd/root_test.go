@@ -14,7 +14,7 @@ func TestRootCMD(t *testing.T) {
 		if status := rr.Code; status != http.StatusOK {
 			t.Errorf("Wanted %v but got %v", http.StatusOK, status)
 		}
-		expected := "pong"
+		expected := "pong\n"
 		got := rr.Body.String()
 		if got != expected {
 			t.Errorf("Wanted %q in body but got %q", expected, got)
